@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Profile Card</title>
+    <style>
+        .card {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+        .card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card" id="profileCard">
+    <img id="profileImage" src="" alt="Profile Image">
+    <h2 id="username"></h2>
+    <p>Followers: <span id="followersCount">0</span></p>
+</div>
+
+<script>
+    const username = 'AviiOjha'; // Replace with the desired GitHub username
+    const profileCard = document.getElementById('profileCard');
+    const profileImage = document.getElementById('profileImage');
+    const usernameElement = document.getElementById('username');
+    const followersCountElement = document.getElementById('followersCount');
+
+    function fetchGitHubData() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `https://api.github.com/users/${username}`, true);
+        
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                const data = JSON.parse(xhr.responseText);
+                profileImage.src = data.avatar_url;
+                usernameElement.textContent = data.login;
+                followersCountElement.textContent = data.followers;
+            } else {
+                console.error('Error fetching data:', xhr.statusText);
+            }
+        };
+
+        xhr.onerror = function() {
+            console.error('Request failed');
+        };
+
+        xhr.send();
+    }
+
+    fetchGitHubData();
+</script>
+
+</body>
+</html>
